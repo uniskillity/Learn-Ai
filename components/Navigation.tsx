@@ -1,5 +1,9 @@
 import React from 'react';
-import { LayoutDashboard, BookOpen, Map, User, Cpu, Network, Trophy, Bookmark, GraduationCap, Briefcase, Award, FileText, Target, Mic, Box, Globe, CreditCard, Users } from 'lucide-react';
+import { 
+  LayoutDashboard, Trophy, BookOpen, Bookmark, Map, 
+  GraduationCap, Briefcase, Award, FileText, Target, 
+  Mic, Box, Globe, User, CreditCard, Users, Cpu, Star
+} from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Navigation: React.FC = () => {
@@ -59,20 +63,20 @@ const Navigation: React.FC = () => {
   ];
 
   return (
-    <div className="h-screen w-64 bg-[#0f172a] border-r border-slate-800 flex flex-col fixed left-0 top-0 z-20 overflow-y-auto no-scrollbar">
+    <div className="h-screen w-64 bg-[#0f172a] border-r border-slate-800 flex flex-col fixed left-0 top-0 z-20 overflow-y-auto custom-scrollbar">
       <div className="p-6 flex items-center gap-3 sticky top-0 bg-[#0f172a] z-10">
         <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <div className="p-2 bg-indigo-600 rounded-lg">
+            <div className="p-2 bg-indigo-600 rounded-lg shadow-lg shadow-indigo-500/20">
                 <Cpu className="w-6 h-6 text-white" />
             </div>
             <span className="text-xl font-bold text-white tracking-tight">Cognosys</span>
         </Link>
       </div>
 
-      <nav className="flex-1 px-4 pb-8">
+      <nav className="flex-1 px-4 pb-8 space-y-6">
         {navGroups.map((group, idx) => (
-          <div key={idx} className="mb-6">
-            <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-4">
+          <div key={idx}>
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3 px-4">
               {group.title}
             </h3>
             <div className="space-y-1">
@@ -80,29 +84,51 @@ const Navigation: React.FC = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 group ${
+                  className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 group ${
                     isActive(item.path)
-                      ? 'bg-slate-800 text-white border-l-4 border-indigo-500'
-                      : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
+                      ? 'bg-indigo-600/10 text-indigo-400 font-semibold'
+                      : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
                   }`}
                 >
-                  <item.icon className={`w-4 h-4 ${isActive(item.path) ? 'text-indigo-400' : 'text-slate-500 group-hover:text-slate-300'}`} />
-                  <span className="font-medium text-sm">{item.label}</span>
+                  <item.icon className={`w-4 h-4 transition-colors ${
+                    isActive(item.path) ? 'text-indigo-400' : 'text-slate-500 group-hover:text-slate-300'
+                  }`} />
+                  <span className="text-sm">{item.label}</span>
                 </Link>
               ))}
             </div>
           </div>
         ))}
         
-        <div className="mt-8 px-4">
-            <div className="p-4 rounded-xl bg-gradient-to-r from-amber-600/20 to-orange-600/20 border border-orange-500/30 text-center">
-                <p className="text-xs font-bold text-orange-400 mb-2">REMOVE ADS</p>
-                <button className="w-full py-2 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold rounded transition-colors">
-                    Go Premium
+        <div className="px-4 pt-4">
+            <div className="p-4 rounded-xl bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-orange-500/20 text-center relative overflow-hidden group cursor-pointer">
+                <div className="absolute inset-0 bg-orange-500/5 group-hover:bg-orange-500/10 transition-colors"></div>
+                <div className="relative z-10 flex items-center justify-center gap-2 mb-3">
+                   <Star className="w-4 h-4 text-orange-400 fill-orange-400" />
+                   <p className="text-[10px] font-bold text-orange-400 uppercase tracking-widest">Premium</p>
+                </div>
+                <button className="w-full py-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white text-xs font-bold rounded-lg transition-all shadow-lg shadow-orange-900/20 relative z-10">
+                    REMOVE ADS
                 </button>
             </div>
         </div>
       </nav>
+      
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #334155;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #475569;
+        }
+      `}</style>
     </div>
   );
 };

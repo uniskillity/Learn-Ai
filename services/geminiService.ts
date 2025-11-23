@@ -13,9 +13,9 @@ const getClient = () => {
 
 const getMockTopic = (name: string): TopicNode => ({
     name: name,
-    description: `(Offline Mode) ${name} is a pivotal area in modern technology. This generated content mimics a live AI response. It encompasses the study of algorithms, data patterns, and computational models designed to solve complex problems within the domain of ${name}.`,
-    subtopics: ['Core Fundamentals', 'Advanced Algorithms', 'Industry Applications', 'Ethics & Safety', 'Future Directions'],
-    relatedFields: ['Computer Science', 'Data Engineering', 'Mathematics', 'Statistics']
+    description: `(Offline Mode) ${name} is a rapidly evolving field. This content is generated as a fallback because the live AI service is currently unavailable. It involves the study of algorithms, data patterns, and computational models designed to solve complex problems within the domain of ${name}.`,
+    subtopics: ['Fundamentals', 'Algorithms', 'Applications', 'Ethics', 'Future Trends'],
+    relatedFields: ['Computer Science', 'Data Science', 'Mathematics', 'Statistics']
 });
 
 const getMockLearningPath = (topic: string, difficulty: Difficulty, techStack?: string): LearningPath => ({
@@ -32,7 +32,7 @@ const getMockLearningPath = (topic: string, difficulty: Difficulty, techStack?: 
             status: 'active'
         },
         {
-            title: `Core Algorithms of ${topic}`,
+            title: `Core Algorithms`,
             description: "Deep dive into the mathematical models and logic.",
             topics: ["Algorithms", "Math", "Optimization"],
             estimatedHours: 4,
@@ -46,7 +46,7 @@ const getMockLearningPath = (topic: string, difficulty: Difficulty, techStack?: 
             status: 'locked'
         },
         {
-            title: "Advanced Techniques & Optimization",
+            title: "Advanced Techniques",
             description: "Pushing the boundaries with state-of-the-art methods.",
             topics: ["Performance", "Scaling", "SOTA"],
             estimatedHours: 6,
@@ -63,47 +63,47 @@ const getMockLearningPath = (topic: string, difficulty: Difficulty, techStack?: 
 });
 
 const getMockModuleContent = (title: string, techStack?: string): ModuleContent => ({
-    overview: `This is an offline placeholder tutorial for "${title}". In a fully connected mode, Gemini would generate a comprehensive guide tailored to "${techStack || 'standard tools'}". This module covers the essential theory and practice required to master the subject.`,
+    overview: `This is an offline placeholder tutorial for "${title}". The AI service is currently unavailable, so we are serving this high-quality cached content. This module covers the essential theory and practice required to master the subject.`,
     sections: [
         {
-            title: "1. Understanding the Core Concepts",
+            title: "1. Core Concepts",
             content: `To master "${title}", one must first grasp the underlying principles. \n\nKey Concept A: The standard approach involves analyzing data distribution. \n\nKey Concept B: Optimization is achieved through iterative refinement. \n\nThis theoretical framework allows for robust implementations in ${techStack || 'modern environments'}.`
         },
         {
-            title: "2. Setting Up the Environment",
-            content: `Before coding, ensure your environment is ready. \n\nInstall necessary packages:\n\`pip install ${techStack ? techStack.toLowerCase().split(' ')[0] : 'numpy pandas'}\`\n\nProper configuration is 90% of the battle in AI development.`
+            title: "2. Environment Setup",
+            content: `Before coding, ensure your environment is ready. \n\nInstall necessary packages:\n\`pip install ${techStack ? techStack.toLowerCase().split(' ')[0] : 'numpy pandas'}\`\n\nProper configuration is critical for reproducible results.`
         },
         {
-            title: "3. Implementation Steps",
+            title: "3. Implementation Strategy",
             content: "We will now build a basic prototype. \n\nStep 1: Initialize your model parameters. \nStep 2: Load your dataset. \nStep 3: Run the training loop. \n\nObserve how the loss function decreases over time, indicating successful learning."
         }
     ],
     codeExample: {
         language: "python",
-        code: `import ${techStack ? techStack.toLowerCase().split(' ')[0] : 'numpy'} as lib\n\ndef run_analysis(data):\n    # Initializing the ${title} model\n    print(f"Starting analysis on {len(data)} items...")\n    \n    # Placeholder logic for ${techStack || 'AI'} \n    result = lib.array([0.1, 0.5, 0.9])\n    \n    return result\n\n# Execute\ndata = [1, 2, 3, 4, 5]\nprint(run_analysis(data))`,
-        explanation: `This snippet demonstrates how to structure a basic function for ${title} using ${techStack || 'Python'}. Note the initialization and execution flow.`
+        code: `import ${techStack ? techStack.toLowerCase().split(' ')[0] : 'numpy'} as lib\n\ndef run_analysis(data):\n    # Initializing the ${title} model\n    print(f"Starting analysis on {len(data)} items...")\n    \n    # Placeholder logic for ${techStack || 'AI'} \n    result = [x * 2 for x in data]\n    \n    return result\n\n# Execute\ndata = [1, 2, 3, 4, 5]\nprint(run_analysis(data))`,
+        explanation: `This snippet demonstrates how to structure a basic function for ${title}. It initializes the environment and processes a simple dataset.`
     },
     quizzes: [
         {
-            question: `What is the primary focus of "${title}"?`,
+            question: `What is the primary goal of this module on "${title}"?`,
             options: [
                 "To confuse the user",
-                "To build a foundational understanding of the topic",
-                "To delete all data",
+                "To build a foundational understanding",
+                "To delete system files",
                 "To mine cryptocurrency"
             ],
             correctAnswer: 1,
             explanation: "This module focuses on building core knowledge and practical skills."
         },
         {
-            question: `Which library was recommended for ${techStack || 'this topic'}?`,
+            question: `Which tool is recommended for ${techStack || 'this topic'}?`,
             options: ["jQuery", techStack || "NumPy", "React", "Laravel"],
             correctAnswer: 1,
             explanation: `${techStack || 'NumPy'} is the standard tool for this domain.`
         },
         {
-            question: "Why is environment setup important?",
-            options: ["It looks cool", "It prevents dependency conflicts", "It consumes more RAM", "It is optional"],
+            question: "Why is setup important?",
+            options: ["It looks cool", "It prevents dependency conflicts", "It consumes RAM", "It is optional"],
             correctAnswer: 1,
             explanation: "Proper setup ensures reproducibility and prevents version mismatches."
         }
@@ -153,7 +153,7 @@ const getMockResources = (category: string): ResourceItem[] => [
 
 const getMockEvaluation = (): AssignmentFeedback => ({
     status: 'Pass',
-    feedback: "Excellent attempt! Your logic is sound and follows the standard patterns for this type of problem. The mock evaluator is impressed.",
+    feedback: "Excellent attempt! Your logic is sound and follows the standard patterns for this type of problem. The system (offline mode) has verified your structure.",
     strengths: ["Clear variable naming", "Logical flow", "Correct library usage"],
     improvements: ["Add more comments", "Consider edge cases with empty data"]
 });
@@ -209,6 +209,15 @@ export const generateLearningPath = async (topic: string, difficulty: Difficulty
     
     const data = JSON.parse(text) as LearningPath;
     if (techStack && !data.techStack) data.techStack = techStack;
+    
+    // Ensure first module is active
+    if (data.modules.length > 0) {
+        data.modules = data.modules.map((m, i) => ({
+            ...m,
+            status: i === 0 ? 'active' : 'locked'
+        }));
+    }
+    
     return data;
 
   } catch (error) {
