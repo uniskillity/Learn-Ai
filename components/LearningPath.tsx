@@ -65,17 +65,17 @@ const LearningPath: React.FC = () => {
     try {
         const apiKey = process.env.API_KEY;
         if (!apiKey) {
-             await new Promise(r => setTimeout(r, 2000));
-             alert("Please check your API key configuration.");
-        } else {
-            const newPath = await generateLearningPath(topic, difficulty, techStack);
-            if (newPath) {
-                newPath.modules = newPath.modules.map((m, i) => ({
-                    ...m,
-                    status: i === 0 ? 'active' : 'locked'
-                }));
-                setPath(newPath);
-            }
+             // Fallback logic handled in service, but can alert if desired
+             console.log("Using offline mode");
+        }
+        
+        const newPath = await generateLearningPath(topic, difficulty, techStack);
+        if (newPath) {
+            newPath.modules = newPath.modules.map((m, i) => ({
+                ...m,
+                status: i === 0 ? 'active' : 'locked'
+            }));
+            setPath(newPath);
         }
     } catch (e) {
         console.error(e);
