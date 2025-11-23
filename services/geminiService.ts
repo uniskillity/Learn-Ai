@@ -1,5 +1,6 @@
+
 import { GoogleGenAI, Type } from "@google/genai";
-import { LearningPath, ResourceItem, Difficulty, ResourceType, TopicNode, ModuleContent } from "../types";
+import { LearningPath, ResourceItem, Difficulty, ResourceType, TopicNode, ModuleContent, AssignmentFeedback } from "../types";
 
 // Initialize API Client
 const getClient = () => {
@@ -9,7 +10,6 @@ const getClient = () => {
 };
 
 // --- Mock Data Generators ---
-// These ensure the app remains functional and interactive even if the API is unavailable.
 
 const getMockTopic = (name: string): TopicNode => ({
     name: name,
@@ -18,9 +18,10 @@ const getMockTopic = (name: string): TopicNode => ({
     relatedFields: ['Computer Science', 'Data Science', 'Mathematics', 'Statistics']
 });
 
-const getMockLearningPath = (topic: string, difficulty: Difficulty): LearningPath => ({
+const getMockLearningPath = (topic: string, difficulty: Difficulty, techStack?: string): LearningPath => ({
     id: `mock-path-${Date.now()}`,
     topic: topic,
+    techStack: techStack || "General",
     difficulty: difficulty,
     modules: [
         {
@@ -31,14 +32,14 @@ const getMockLearningPath = (topic: string, difficulty: Difficulty): LearningPat
             status: 'active'
         },
         {
-            title: "Core Principles",
+            title: "Core Principles & Architecture",
             description: "Deep dive into the fundamental theories.",
             topics: ["Theory", "Methodology"],
             estimatedHours: 4,
             status: 'locked'
         },
         {
-            title: "Practical Applications",
+            title: `Implementing with ${techStack || 'Code'}`,
             description: "Applying knowledge to real-world scenarios.",
             topics: ["Case Studies", "Implementation"],
             estimatedHours: 5,
@@ -47,33 +48,58 @@ const getMockLearningPath = (topic: string, difficulty: Difficulty): LearningPat
     ]
 });
 
-const getMockModuleContent = (title: string): ModuleContent => ({
-    overview: `This is a placeholder overview for "${title}". The AI service is currently offline, but you can still interact with the lesson structure. In a live environment, this would contain a detailed tutorial customized to your learning path.`,
+const getMockModuleContent = (title: string, techStack?: string): ModuleContent => ({
+    overview: `This is a placeholder overview for "${title}". The AI service is currently offline. In a live environment, this would contain a detailed tutorial customized to your learning path using ${techStack || 'standard libraries'}.`,
     sections: [
         {
-            title: "Key Concepts",
+            title: "Theoretical Foundation",
             content: "This section would normally explain the fundamental concepts in detail. \n\nIt would cover definitions, examples, and theoretical underpinnings necessary for understanding the topic."
         },
         {
-            title: "Practical Implementation",
+            title: "Implementation Strategy",
             content: "Here you would find step-by-step instructions on how to apply these concepts. \n\nThis might include best practices, common pitfalls, and workflow strategies."
         }
     ],
     codeExample: {
         language: "python",
-        code: "def demo_function():\n    # This is a placeholder code example\n    print('Learning AI is fun!')\n    return True",
-        explanation: "This simple function demonstrates the syntax relevant to the topic."
+        code: `import ${techStack?.toLowerCase().replace(' ', '') || 'numpy'} as lib\n\ndef demo_model():\n    # Placeholder for ${techStack} code\n    data = lib.array([1, 2, 3])\n    print("Model initialized")\n    return data`,
+        explanation: `This simple function demonstrates the syntax relevant to ${techStack || 'the topic'}.`
     },
-    quiz: {
-        question: "What is the primary purpose of this placeholder content?",
-        options: [
-            "To teach advanced AI",
-            "To demonstrate UI functionality when offline",
-            "To solve world hunger",
-            "None of the above"
+    quizzes: [
+        {
+            question: "What is the primary purpose of this placeholder content?",
+            options: [
+                "To teach advanced AI",
+                "To demonstrate UI functionality when offline",
+                "To solve world hunger",
+                "None of the above"
+            ],
+            correctAnswer: 1,
+            explanation: "This content ensures the application remains usable even without a live API connection."
+        },
+        {
+            question: "Which phase comes first in the learning process?",
+            options: ["Implementation", "Theory", "Deployment", "Retirement"],
+            correctAnswer: 1,
+            explanation: "Understanding the theory is crucial before moving to implementation."
+        },
+        {
+            question: "What is a key benefit of using frameworks?",
+            options: ["They make code slower", "They require more boilerplate", "They provide pre-built abstractions", "They are illegal"],
+            correctAnswer: 2,
+            explanation: "Frameworks abstract away complex low-level details."
+        }
+    ],
+    assignment: {
+        title: "Hello World Project",
+        description: `Create a basic script using ${techStack || 'Python'} that initializes a data structure and prints it.`,
+        requirements: [
+            "Install the necessary library",
+            "Import the library",
+            "Create a simple data array or tensor",
+            "Print the shape of the data"
         ],
-        correctAnswer: 1,
-        explanation: "This content ensures the application remains usable even without a live API connection."
+        difficulty: "Easy"
     }
 });
 
@@ -107,20 +133,31 @@ const getMockResources = (category: string): ResourceItem[] => [
     }
 ];
 
+const getMockEvaluation = (): AssignmentFeedback => ({
+    status: 'Pass',
+    feedback: "Good job on the implementation! You've correctly set up the basic structure.",
+    strengths: ["Correct syntax", "Logic follows requirements"],
+    improvements: ["Consider adding error handling", "Add comments for clarity"]
+});
+
 // --- API Functions ---
 
-export const generateLearningPath = async (topic: string, difficulty: Difficulty): Promise<LearningPath | null> => {
+export const generateLearningPath = async (topic: string, difficulty: Difficulty, techStack?: string): Promise<LearningPath | null> => {
   const ai = getClient();
   if (!ai) {
       console.warn("API Key missing, using mock data for Learning Path");
-      await new Promise(r => setTimeout(r, 1000)); // Simulate network delay
-      return getMockLearningPath(topic, difficulty);
+      await new Promise(r => setTimeout(r, 1000)); 
+      return getMockLearningPath(topic, difficulty, techStack);
   }
 
   try {
+    const prompt = `Create a detailed learning path for "${topic}" at a "${difficulty}" level. 
+    ${techStack ? `Focus specifically on using the "${techStack}" technology/framework.` : ''}
+    The modules should be sequential and build upon each other.`;
+
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: `Create a detailed learning path for "${topic}" at a "${difficulty}" level.`,
+      contents: prompt,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -129,6 +166,7 @@ export const generateLearningPath = async (topic: string, difficulty: Difficulty
             id: { type: Type.STRING },
             topic: { type: Type.STRING },
             difficulty: { type: Type.STRING },
+            techStack: { type: Type.STRING },
             modules: {
               type: Type.ARRAY,
               items: {
@@ -150,30 +188,41 @@ export const generateLearningPath = async (topic: string, difficulty: Difficulty
 
     const text = response.text;
     if (!text) throw new Error("Empty response");
-    return JSON.parse(text) as LearningPath;
+    
+    const data = JSON.parse(text) as LearningPath;
+    // Ensure techStack is preserved if model drops it
+    if (techStack && !data.techStack) data.techStack = techStack;
+    return data;
+
   } catch (error) {
     console.error("Error generating learning path:", error);
-    return getMockLearningPath(topic, difficulty);
+    return getMockLearningPath(topic, difficulty, techStack);
   }
 };
 
-export const generateModuleContent = async (topic: string, moduleTitle: string, difficulty: string): Promise<ModuleContent | null> => {
+export const generateModuleContent = async (topic: string, moduleTitle: string, difficulty: string, techStack?: string): Promise<ModuleContent | null> => {
   const ai = getClient();
   if (!ai) {
       await new Promise(r => setTimeout(r, 1000));
-      return getMockModuleContent(moduleTitle);
+      return getMockModuleContent(moduleTitle, techStack);
   }
 
   try {
+    const prompt = `Create a concise, high-quality tutorial for the module "${moduleTitle}" which is part of the course "${topic}" (${difficulty} level).
+    
+    Context:
+    - Tech Stack: ${techStack || "General/Agnostic"}
+    
+    Requirements:
+    1. A clear, brief overview.
+    2. 2-3 focused sections explaining core concepts.
+    3. A relevant code example (using ${techStack || 'Python'}).
+    4. 3 Quiz questions to test understanding.
+    5. A "Practical Assignment" challenge that asks the user to build something small based on this module.`;
+
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: `Create a concise, high-quality tutorial for the module "${moduleTitle}" which is part of the course "${topic}" (${difficulty} level).
-      
-      Include:
-      1. A clear, brief overview.
-      2. 2 focused sections explaining core concepts.
-      3. A short, relevant code example (Python preferred).
-      4. A single quiz question.`,
+      contents: prompt,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -200,18 +249,31 @@ export const generateModuleContent = async (topic: string, moduleTitle: string, 
               },
               required: ["language", "code", "explanation"]
             },
-            quiz: {
-              type: Type.OBJECT,
-              properties: {
-                question: { type: Type.STRING },
-                options: { type: Type.ARRAY, items: { type: Type.STRING } },
-                correctAnswer: { type: Type.INTEGER, description: "Index of the correct option (0-based)" },
-                explanation: { type: Type.STRING }
-              },
-              required: ["question", "options", "correctAnswer", "explanation"]
+            quizzes: {
+              type: Type.ARRAY,
+              items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    question: { type: Type.STRING },
+                    options: { type: Type.ARRAY, items: { type: Type.STRING } },
+                    correctAnswer: { type: Type.INTEGER, description: "Index of the correct option (0-based)" },
+                    explanation: { type: Type.STRING }
+                  },
+                  required: ["question", "options", "correctAnswer", "explanation"]
+              }
+            },
+            assignment: {
+                type: Type.OBJECT,
+                properties: {
+                    title: { type: Type.STRING },
+                    description: { type: Type.STRING },
+                    requirements: { type: Type.ARRAY, items: { type: Type.STRING } },
+                    difficulty: { type: Type.STRING }
+                },
+                required: ["title", "description", "requirements", "difficulty"]
             }
           },
-          required: ["overview", "sections", "codeExample", "quiz"]
+          required: ["overview", "sections", "codeExample", "quizzes", "assignment"]
         }
       }
     });
@@ -221,9 +283,55 @@ export const generateModuleContent = async (topic: string, moduleTitle: string, 
     return JSON.parse(text) as ModuleContent;
   } catch (error) {
     console.error("Error generating module content:", error);
-    return getMockModuleContent(moduleTitle);
+    return getMockModuleContent(moduleTitle, techStack);
   }
 };
+
+export const evaluateAssignment = async (assignmentTitle: string, assignmentRequirements: string[], userSubmission: string): Promise<AssignmentFeedback> => {
+    const ai = getClient();
+    if (!ai) {
+        await new Promise(r => setTimeout(r, 1500));
+        return getMockEvaluation();
+    }
+
+    try {
+        const prompt = `You are a friendly but strict coding tutor. Evaluate the user's submission for the assignment "${assignmentTitle}".
+        
+        Assignment Requirements:
+        ${assignmentRequirements.map(r => `- ${r}`).join('\n')}
+
+        User Submission:
+        ${userSubmission}
+
+        Provide structured feedback. If the submission is mostly correct and meets requirements, mark status as "Pass". If it is missing key requirements or has major errors, mark as "Needs Improvement".`;
+
+        const response = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        status: { type: Type.STRING, enum: ["Pass", "Needs Improvement"] },
+                        feedback: { type: Type.STRING },
+                        strengths: { type: Type.ARRAY, items: { type: Type.STRING } },
+                        improvements: { type: Type.ARRAY, items: { type: Type.STRING } }
+                    },
+                    required: ["status", "feedback", "strengths", "improvements"]
+                }
+            }
+        });
+
+        const text = response.text;
+        if (!text) throw new Error("Empty evaluation response");
+        return JSON.parse(text) as AssignmentFeedback;
+
+    } catch (error) {
+        console.error("Error evaluating assignment:", error);
+        return getMockEvaluation();
+    }
+}
 
 export const generateResources = async (category: string): Promise<ResourceItem[]> => {
   const ai = getClient();
@@ -291,7 +399,7 @@ export const generateTopicOverview = async (topicName: string): Promise<TopicNod
             },
             relatedFields: {
               type: Type.ARRAY,
-              items: { type: Type.STRING }
+              items: { type: Type.STRING } 
             }
           },
           required: ["name", "description", "subtopics", "relatedFields"]

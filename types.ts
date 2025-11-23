@@ -39,6 +39,20 @@ export interface QuizQuestion {
   explanation: string;
 }
 
+export interface Assignment {
+  title: string;
+  description: string;
+  requirements: string[];
+  difficulty: string;
+}
+
+export interface AssignmentFeedback {
+  status: 'Pass' | 'Needs Improvement';
+  feedback: string;
+  strengths: string[];
+  improvements: string[];
+}
+
 export interface CodeExample {
   language: string;
   code: string;
@@ -49,7 +63,8 @@ export interface ModuleContent {
   overview: string;
   sections: { title: string; content: string }[];
   codeExample?: CodeExample;
-  quiz?: QuizQuestion;
+  quizzes: QuizQuestion[]; // Changed from single quiz to array
+  assignment?: Assignment; // Added assignment
 }
 
 export interface LearningModule {
@@ -64,6 +79,7 @@ export interface LearningModule {
 export interface LearningPath {
   id: string;
   topic: string;
+  techStack?: string; // Added tech stack support
   difficulty: Difficulty;
   modules: LearningModule[];
 }
