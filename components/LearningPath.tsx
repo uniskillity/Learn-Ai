@@ -27,7 +27,7 @@ const LearningPath: React.FC = () => {
   const [assignmentFeedback, setAssignmentFeedback] = useState<AssignmentFeedback | null>(null);
 
   // Quiz State
-  const [quizAnswers, setQuizAnswers] = useState<{[key: number]: number | null}>({}); // questionIndex -> selectedOptionIndex
+  const [quizAnswers, setQuizAnswers] = useState<{[key: number]: number | null}>({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   
   const [loadingStep, setLoadingStep] = useState(0);
@@ -63,12 +63,6 @@ const LearningPath: React.FC = () => {
     if (!topic) return;
     setLoading(true);
     try {
-        const apiKey = process.env.API_KEY;
-        if (!apiKey) {
-             // Fallback logic handled in service, but can alert if desired
-             console.log("Using offline mode");
-        }
-        
         const newPath = await generateLearningPath(topic, difficulty, techStack);
         if (newPath) {
             newPath.modules = newPath.modules.map((m, i) => ({
@@ -156,6 +150,8 @@ const LearningPath: React.FC = () => {
       });
       return correct;
   };
+
+  const getTotalHours = () => activePath ? activePath.modules.reduce((acc, m) => acc + (m.estimatedHours || 0), 0) : 0;
 
   // --- Render: Create Path View ---
   if (!activePath) {
@@ -380,7 +376,6 @@ const LearningPath: React.FC = () => {
                                       </ul>
                                   </div>
 
-                                  {/* Assignment Submission Area */}
                                   <div className="space-y-4">
                                       <label className="block text-sm font-medium text-slate-300">Your Solution (Code or Text)</label>
                                       <textarea 
@@ -402,7 +397,6 @@ const LearningPath: React.FC = () => {
                                       </div>
                                   </div>
 
-                                  {/* Feedback Display */}
                                   {assignmentFeedback && (
                                       <div className={`mt-6 p-6 rounded-xl border ${
                                           assignmentFeedback.status === 'Pass' 
@@ -572,6 +566,10 @@ const LearningPath: React.FC = () => {
                         {activePath.techStack}
                     </span>
                 )}
+                <span className="px-3 py-1 bg-slate-700/50 text-slate-300 text-xs font-bold uppercase rounded-full border border-slate-600 flex items-center gap-1">
+                    <ClockIcon className="w-3 h-3" />
+                    {getTotalHours()} Hours
+                </span>
             </div>
             <p className="text-slate-400">Your personalized curriculum. Complete modules to earn XP.</p>
         </div>
@@ -620,7 +618,7 @@ const LearningPath: React.FC = () => {
                                     </span>
                                 ))}
                                 <span className="text-xs px-2 py-1 text-slate-500 flex items-center gap-1">
-                                    <ClockIcon className="w-3 h-3" /> {module.estimatedHours} min
+                                    <ClockIcon className="w-3 h-3" /> {module.estimatedHours}h
                                 </span>
                             </div>
 
@@ -672,6 +670,10 @@ const LearningPath: React.FC = () => {
                     <div className="flex items-center gap-3 text-sm text-slate-400">
                         <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                         <span>Modules Completed: <span className="text-white">{activePath.modules.filter(m => m.status === 'completed').length}</span>/{activePath.modules.length}</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm text-slate-400">
+                         <ClockIcon className="w-4 h-4 text-blue-500" />
+                         <span>Total Course Length: <span className="text-white">{getTotalHours()} Hours</span></span>
                     </div>
                 </div>
             </div>

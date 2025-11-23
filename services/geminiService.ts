@@ -13,9 +13,9 @@ const getClient = () => {
 
 const getMockTopic = (name: string): TopicNode => ({
     name: name,
-    description: `(Offline Preview) ${name} is a significant field in modern technology. This content is a placeholder generated because the live AI service is currently unavailable. It typically involves studying algorithms, data patterns, and computational models to solve complex problems.`,
-    subtopics: ['Fundamental Concepts', 'Key Algorithms', 'Real-world Applications', 'Ethical Considerations', 'Future Trends'],
-    relatedFields: ['Computer Science', 'Data Science', 'Mathematics', 'Statistics']
+    description: `(Offline Mode) ${name} is a pivotal area in modern technology. This generated content mimics a live AI response. It encompasses the study of algorithms, data patterns, and computational models designed to solve complex problems within the domain of ${name}.`,
+    subtopics: ['Core Fundamentals', 'Advanced Algorithms', 'Industry Applications', 'Ethics & Safety', 'Future Directions'],
+    relatedFields: ['Computer Science', 'Data Engineering', 'Mathematics', 'Statistics']
 });
 
 const getMockLearningPath = (topic: string, difficulty: Difficulty, techStack?: string): LearningPath => ({
@@ -26,118 +26,136 @@ const getMockLearningPath = (topic: string, difficulty: Difficulty, techStack?: 
     modules: [
         {
             title: `Introduction to ${topic}`,
-            description: "An overview of core concepts and terminology.",
+            description: `Foundational concepts and terminology for ${topic}.`,
             topics: ["Basics", "History", "Key Terms"],
             estimatedHours: 2,
             status: 'active'
         },
         {
-            title: "Core Principles & Architecture",
-            description: "Deep dive into the fundamental theories.",
-            topics: ["Theory", "Methodology"],
+            title: `Core Algorithms of ${topic}`,
+            description: "Deep dive into the mathematical models and logic.",
+            topics: ["Algorithms", "Math", "Optimization"],
             estimatedHours: 4,
             status: 'locked'
         },
         {
-            title: `Implementing with ${techStack || 'Code'}`,
-            description: "Applying knowledge to real-world scenarios.",
-            topics: ["Case Studies", "Implementation"],
+            title: `Applied ${topic} with ${techStack || 'Python'}`,
+            description: "Building real-world applications using standard libraries.",
+            topics: ["Coding", "Deployment", "Testing"],
             estimatedHours: 5,
+            status: 'locked'
+        },
+        {
+            title: "Advanced Techniques & Optimization",
+            description: "Pushing the boundaries with state-of-the-art methods.",
+            topics: ["Performance", "Scaling", "SOTA"],
+            estimatedHours: 6,
+            status: 'locked'
+        },
+        {
+            title: "Capstone Project",
+            description: "End-to-end implementation of a complex system.",
+            topics: ["Project", "System Design"],
+            estimatedHours: 10,
             status: 'locked'
         }
     ]
 });
 
 const getMockModuleContent = (title: string, techStack?: string): ModuleContent => ({
-    overview: `This is a placeholder overview for "${title}". The AI service is currently offline. In a live environment, this would contain a detailed tutorial customized to your learning path using ${techStack || 'standard libraries'}.`,
+    overview: `This is an offline placeholder tutorial for "${title}". In a fully connected mode, Gemini would generate a comprehensive guide tailored to "${techStack || 'standard tools'}". This module covers the essential theory and practice required to master the subject.`,
     sections: [
         {
-            title: "Theoretical Foundation",
-            content: "This section would normally explain the fundamental concepts in detail. \n\nIt would cover definitions, examples, and theoretical underpinnings necessary for understanding the topic."
+            title: "1. Understanding the Core Concepts",
+            content: `To master "${title}", one must first grasp the underlying principles. \n\nKey Concept A: The standard approach involves analyzing data distribution. \n\nKey Concept B: Optimization is achieved through iterative refinement. \n\nThis theoretical framework allows for robust implementations in ${techStack || 'modern environments'}.`
         },
         {
-            title: "Implementation Strategy",
-            content: "Here you would find step-by-step instructions on how to apply these concepts. \n\nThis might include best practices, common pitfalls, and workflow strategies."
+            title: "2. Setting Up the Environment",
+            content: `Before coding, ensure your environment is ready. \n\nInstall necessary packages:\n\`pip install ${techStack ? techStack.toLowerCase().split(' ')[0] : 'numpy pandas'}\`\n\nProper configuration is 90% of the battle in AI development.`
+        },
+        {
+            title: "3. Implementation Steps",
+            content: "We will now build a basic prototype. \n\nStep 1: Initialize your model parameters. \nStep 2: Load your dataset. \nStep 3: Run the training loop. \n\nObserve how the loss function decreases over time, indicating successful learning."
         }
     ],
     codeExample: {
         language: "python",
-        code: `import ${techStack?.toLowerCase().replace(' ', '') || 'numpy'} as lib\n\ndef demo_model():\n    # Placeholder for ${techStack} code\n    data = lib.array([1, 2, 3])\n    print("Model initialized")\n    return data`,
-        explanation: `This simple function demonstrates the syntax relevant to ${techStack || 'the topic'}.`
+        code: `import ${techStack ? techStack.toLowerCase().split(' ')[0] : 'numpy'} as lib\n\ndef run_analysis(data):\n    # Initializing the ${title} model\n    print(f"Starting analysis on {len(data)} items...")\n    \n    # Placeholder logic for ${techStack || 'AI'} \n    result = lib.array([0.1, 0.5, 0.9])\n    \n    return result\n\n# Execute\ndata = [1, 2, 3, 4, 5]\nprint(run_analysis(data))`,
+        explanation: `This snippet demonstrates how to structure a basic function for ${title} using ${techStack || 'Python'}. Note the initialization and execution flow.`
     },
     quizzes: [
         {
-            question: "What is the primary purpose of this placeholder content?",
+            question: `What is the primary focus of "${title}"?`,
             options: [
-                "To teach advanced AI",
-                "To demonstrate UI functionality when offline",
-                "To solve world hunger",
-                "None of the above"
+                "To confuse the user",
+                "To build a foundational understanding of the topic",
+                "To delete all data",
+                "To mine cryptocurrency"
             ],
             correctAnswer: 1,
-            explanation: "This content ensures the application remains usable even without a live API connection."
+            explanation: "This module focuses on building core knowledge and practical skills."
         },
         {
-            question: "Which phase comes first in the learning process?",
-            options: ["Implementation", "Theory", "Deployment", "Retirement"],
+            question: `Which library was recommended for ${techStack || 'this topic'}?`,
+            options: ["jQuery", techStack || "NumPy", "React", "Laravel"],
             correctAnswer: 1,
-            explanation: "Understanding the theory is crucial before moving to implementation."
+            explanation: `${techStack || 'NumPy'} is the standard tool for this domain.`
         },
         {
-            question: "What is a key benefit of using frameworks?",
-            options: ["They make code slower", "They require more boilerplate", "They provide pre-built abstractions", "They are illegal"],
-            correctAnswer: 2,
-            explanation: "Frameworks abstract away complex low-level details."
+            question: "Why is environment setup important?",
+            options: ["It looks cool", "It prevents dependency conflicts", "It consumes more RAM", "It is optional"],
+            correctAnswer: 1,
+            explanation: "Proper setup ensures reproducibility and prevents version mismatches."
         }
     ],
     assignment: {
-        title: "Hello World Project",
-        description: `Create a basic script using ${techStack || 'Python'} that initializes a data structure and prints it.`,
+        title: "Build a Prototype",
+        description: `Create a functional script that implements the core concepts of ${title} using ${techStack || 'Python'}.`,
         requirements: [
-            "Install the necessary library",
-            "Import the library",
-            "Create a simple data array or tensor",
-            "Print the shape of the data"
+            "Import the required libraries",
+            "Define a class or function for the main logic",
+            "Process a sample dataset",
+            "Output the final accuracy or result"
         ],
-        difficulty: "Easy"
+        difficulty: "Intermediate"
     }
 });
 
 const getMockResources = (category: string): ResourceItem[] => [
     {
         id: `mock-res-1-${Date.now()}`,
-        title: `Fundamentals of ${category}`,
-        author: 'Jane Doe',
+        title: `The Definitive Guide to ${category}`,
+        author: 'AI Research Team',
         type: ResourceType.Book,
         url: '#',
-        description: 'A comprehensive guide to getting started with clear examples and exercises.',
-        tags: ['Beginner', 'Theory']
+        description: `A deep dive into ${category} featuring modern techniques and case studies.`,
+        tags: ['Advanced', 'Theory']
     },
     {
         id: `mock-res-2-${Date.now()}`,
-        title: `${category} in Practice`,
-        author: 'John Smith',
+        title: `${category} for Practitioners`,
+        author: 'Jane Engineer',
         type: ResourceType.Course,
         url: '#',
-        description: 'Hands-on tutorials and projects designed to build real-world skills.',
-        tags: ['Practical', 'Coding']
+        description: 'Video lectures covering end-to-end implementation details.',
+        tags: ['Practical', 'Video']
     },
     {
         id: `mock-res-3-${Date.now()}`,
-        title: `Advanced ${category} Toolkit`,
-        author: 'Tech Corp',
+        title: `Interactive ${category} Visualizer`,
+        author: 'Tech Labs',
         type: ResourceType.Tool,
         url: '#',
-        description: 'Essential tools and libraries for professional development.',
-        tags: ['Tools', 'Professional']
+        description: 'A browser-based tool to visualize the algorithms in real-time.',
+        tags: ['Tool', 'Visualization']
     }
 ];
 
 const getMockEvaluation = (): AssignmentFeedback => ({
     status: 'Pass',
-    feedback: "Good job on the implementation! You've correctly set up the basic structure.",
-    strengths: ["Correct syntax", "Logic follows requirements"],
-    improvements: ["Consider adding error handling", "Add comments for clarity"]
+    feedback: "Excellent attempt! Your logic is sound and follows the standard patterns for this type of problem. The mock evaluator is impressed.",
+    strengths: ["Clear variable naming", "Logical flow", "Correct library usage"],
+    improvements: ["Add more comments", "Consider edge cases with empty data"]
 });
 
 // --- API Functions ---
@@ -145,7 +163,7 @@ const getMockEvaluation = (): AssignmentFeedback => ({
 export const generateLearningPath = async (topic: string, difficulty: Difficulty, techStack?: string): Promise<LearningPath | null> => {
   const ai = getClient();
   if (!ai) {
-      console.warn("API Key missing, using mock data for Learning Path");
+      console.log("API Key missing, using mock data for Learning Path");
       await new Promise(r => setTimeout(r, 1000)); 
       return getMockLearningPath(topic, difficulty, techStack);
   }
@@ -190,12 +208,11 @@ export const generateLearningPath = async (topic: string, difficulty: Difficulty
     if (!text) throw new Error("Empty response");
     
     const data = JSON.parse(text) as LearningPath;
-    // Ensure techStack is preserved if model drops it
     if (techStack && !data.techStack) data.techStack = techStack;
     return data;
 
   } catch (error) {
-    console.error("Error generating learning path:", error);
+    console.error("Error generating learning path (Switching to Mock):", error);
     return getMockLearningPath(topic, difficulty, techStack);
   }
 };
@@ -203,7 +220,7 @@ export const generateLearningPath = async (topic: string, difficulty: Difficulty
 export const generateModuleContent = async (topic: string, moduleTitle: string, difficulty: string, techStack?: string): Promise<ModuleContent | null> => {
   const ai = getClient();
   if (!ai) {
-      await new Promise(r => setTimeout(r, 1000));
+      await new Promise(r => setTimeout(r, 1500));
       return getMockModuleContent(moduleTitle, techStack);
   }
 
@@ -218,7 +235,7 @@ export const generateModuleContent = async (topic: string, moduleTitle: string, 
     2. 2-3 focused sections explaining core concepts.
     3. A relevant code example (using ${techStack || 'Python'}).
     4. 3 Quiz questions to test understanding.
-    5. A "Practical Assignment" challenge that asks the user to build something small based on this module.`;
+    5. A "Practical Assignment" challenge.`;
 
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
@@ -256,7 +273,7 @@ export const generateModuleContent = async (topic: string, moduleTitle: string, 
                   properties: {
                     question: { type: Type.STRING },
                     options: { type: Type.ARRAY, items: { type: Type.STRING } },
-                    correctAnswer: { type: Type.INTEGER, description: "Index of the correct option (0-based)" },
+                    correctAnswer: { type: Type.INTEGER },
                     explanation: { type: Type.STRING }
                   },
                   required: ["question", "options", "correctAnswer", "explanation"]
@@ -282,7 +299,7 @@ export const generateModuleContent = async (topic: string, moduleTitle: string, 
     if (!text) throw new Error("Empty response");
     return JSON.parse(text) as ModuleContent;
   } catch (error) {
-    console.error("Error generating module content:", error);
+    console.error("Error generating module content (Switching to Mock):", error);
     return getMockModuleContent(moduleTitle, techStack);
   }
 };
@@ -295,15 +312,9 @@ export const evaluateAssignment = async (assignmentTitle: string, assignmentRequ
     }
 
     try {
-        const prompt = `You are a friendly but strict coding tutor. Evaluate the user's submission for the assignment "${assignmentTitle}".
-        
-        Assignment Requirements:
-        ${assignmentRequirements.map(r => `- ${r}`).join('\n')}
-
-        User Submission:
-        ${userSubmission}
-
-        Provide structured feedback. If the submission is mostly correct and meets requirements, mark status as "Pass". If it is missing key requirements or has major errors, mark as "Needs Improvement".`;
+        const prompt = `Evaluate the user's submission for "${assignmentTitle}".
+        Requirements: ${assignmentRequirements.join(', ')}.
+        Submission: ${userSubmission}`;
 
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash",
@@ -328,7 +339,7 @@ export const evaluateAssignment = async (assignmentTitle: string, assignmentRequ
         return JSON.parse(text) as AssignmentFeedback;
 
     } catch (error) {
-        console.error("Error evaluating assignment:", error);
+        console.error("Error evaluating assignment (Switching to Mock):", error);
         return getMockEvaluation();
     }
 }
@@ -343,7 +354,7 @@ export const generateResources = async (category: string): Promise<ResourceItem[
   try {
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: `Recommend 5 high-quality AI resources (books, papers, tools, or courses) for: "${category}".`,
+      contents: `Recommend 5 AI resources for: "${category}".`,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -369,7 +380,7 @@ export const generateResources = async (category: string): Promise<ResourceItem[
     if (!text) throw new Error("Empty response");
     return JSON.parse(text) as ResourceItem[];
   } catch (error) {
-    console.error("Error generating resources:", error);
+    console.error("Error generating resources (Switching to Mock):", error);
     return getMockResources(category);
   }
 };
@@ -377,15 +388,14 @@ export const generateResources = async (category: string): Promise<ResourceItem[
 export const generateTopicOverview = async (topicName: string): Promise<TopicNode | null> => {
   const ai = getClient();
   if (!ai) {
-      console.warn("API Key missing, using mock data for Topic Explorer");
-      await new Promise(r => setTimeout(r, 800)); // Simulate delay
+      await new Promise(r => setTimeout(r, 800));
       return getMockTopic(topicName);
   }
 
   try {
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: `Analyze the AI topic '${topicName}'. Provide a concise description, a list of key subtopics or sub-disciplines, and related fields.`,
+      contents: `Analyze the AI topic '${topicName}'. Provide description, subtopics, and related fields.`,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -393,14 +403,8 @@ export const generateTopicOverview = async (topicName: string): Promise<TopicNod
           properties: {
             name: { type: Type.STRING },
             description: { type: Type.STRING },
-            subtopics: { 
-              type: Type.ARRAY, 
-              items: { type: Type.STRING } 
-            },
-            relatedFields: {
-              type: Type.ARRAY,
-              items: { type: Type.STRING } 
-            }
+            subtopics: { type: Type.ARRAY, items: { type: Type.STRING } },
+            relatedFields: { type: Type.ARRAY, items: { type: Type.STRING } }
           },
           required: ["name", "description", "subtopics", "relatedFields"]
         }
@@ -411,7 +415,7 @@ export const generateTopicOverview = async (topicName: string): Promise<TopicNod
     if (!text) throw new Error("Empty response");
     return JSON.parse(text) as TopicNode;
   } catch (error) {
-    console.error("Error exploring topic:", error);
+    console.error("Error exploring topic (Switching to Mock):", error);
     return getMockTopic(topicName);
   }
 };

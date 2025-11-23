@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, Brain, Globe, Zap, ArrowRight, BookOpen, BarChart } from 'lucide-react';
@@ -19,8 +20,9 @@ const LandingPage: React.FC = () => {
             <span className="text-xl font-bold tracking-tight">Cognosys AI</span>
         </div>
         <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-slate-300 hover:text-white transition-colors">Features</a>
-            <a href="#topics" className="text-slate-300 hover:text-white transition-colors">Topics</a>
+            <Link to="/app/dashboard" className="text-slate-300 hover:text-white transition-colors">Dashboard</Link>
+            <Link to="/app/topics" className="text-slate-300 hover:text-white transition-colors">Topics</Link>
+            <Link to="/app/resources" className="text-slate-300 hover:text-white transition-colors">Resources</Link>
             <Link to="/app/dashboard" className="px-5 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg font-medium transition-colors">
                 Log In
             </Link>
@@ -45,9 +47,9 @@ const LandingPage: React.FC = () => {
             <Link to="/app/dashboard" className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-lg transition-all shadow-lg shadow-indigo-900/50 flex items-center gap-2">
                 Get Started Free <ArrowRight className="w-5 h-5" />
             </Link>
-            <a href="#topics" className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-lg border border-slate-700 transition-all">
+            <Link to="/app/topics" className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-lg border border-slate-700 transition-all">
                 Explore Topics
-            </a>
+            </Link>
         </div>
       </div>
 
@@ -60,21 +62,27 @@ const LandingPage: React.FC = () => {
             </div>
             
             <div className="grid md:grid-cols-3 gap-8">
-                <FeatureCard 
-                    icon={Globe} 
-                    title="Global AI Topic Explorer" 
-                    desc="Dive deep into any AI field. From Neural Networks to Ethics, explore the entire landscape." 
-                />
-                <FeatureCard 
-                    icon={BookOpen} 
-                    title="Custom Learning Paths" 
-                    desc="Tell us what you want to learn, and we'll generate a structured curriculum just for you." 
-                />
-                <FeatureCard 
-                    icon={BarChart} 
-                    title="Progress Tracking" 
-                    desc="Visualize your growth with detailed analytics, XP tracking, and skill radar charts." 
-                />
+                <Link to="/app/topics" className="block hover:no-underline">
+                    <FeatureCard 
+                        icon={Globe} 
+                        title="Global AI Topic Explorer" 
+                        desc="Dive deep into any AI field. From Neural Networks to Ethics, explore the entire landscape." 
+                    />
+                </Link>
+                <Link to="/app/path" className="block hover:no-underline">
+                    <FeatureCard 
+                        icon={BookOpen} 
+                        title="Custom Learning Paths" 
+                        desc="Tell us what you want to learn, and we'll generate a structured curriculum just for you." 
+                    />
+                </Link>
+                <Link to="/app/dashboard" className="block hover:no-underline">
+                    <FeatureCard 
+                        icon={BarChart} 
+                        title="Progress Tracking" 
+                        desc="Visualize your growth with detailed analytics, XP tracking, and skill radar charts." 
+                    />
+                </Link>
             </div>
         </div>
       </div>
@@ -116,7 +124,7 @@ const LandingPage: React.FC = () => {
 };
 
 const FeatureCard: React.FC<{ icon: React.ElementType, title: string, desc: string }> = ({ icon: Icon, title, desc }) => (
-    <div className="p-8 rounded-2xl bg-slate-800/50 border border-slate-700 hover:bg-slate-800 transition-colors">
+    <div className="p-8 rounded-2xl bg-slate-800/50 border border-slate-700 hover:bg-slate-800 transition-colors h-full">
         <div className="w-12 h-12 bg-indigo-900/50 rounded-lg flex items-center justify-center mb-6 text-indigo-400">
             <Icon className="w-6 h-6" />
         </div>

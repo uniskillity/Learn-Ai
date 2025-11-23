@@ -1,4 +1,3 @@
-
 export enum Difficulty {
   Beginner = "Beginner",
   Intermediate = "Intermediate",
@@ -79,6 +78,7 @@ export interface LearningModule {
 export interface LearningPath {
   id: string;
   topic: string;
+  category?: string; // Added categorization support
   techStack?: string; // Added tech stack support
   difficulty: Difficulty;
   modules: LearningModule[];
